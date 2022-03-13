@@ -27,7 +27,7 @@ class AdminProfileController extends Controller
         }
     }
     public function AdminCreateProfile(Request $request)
-    {
+    {   
          $validator = $request->validate([
            'name'=>'required',
            'email'=>'required',
@@ -45,7 +45,7 @@ class AdminProfileController extends Controller
             if ($op){
                 return response()->json([
                     'status' => 200,
-                    'message' => 'Admin added succesfully',
+                    'message' => 'success',
                     ]);
             }else {
                 return response()->json([
