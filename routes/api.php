@@ -86,13 +86,13 @@ Route::delete('destory/admin/{id}', [AdminProfileController::class, 'destoryAdmi
 Route::get('admin/change/password/{id}', [AdminProfileController::class, 'AdminChangePassword'])->name('admin.change.password');
 Route::post('admin/update/password/{id}', [AdminProfileController::class, 'AdminUpdatePassword'])->name('admin.update.password');
 // Admin Get All Users
-Route::prefix('alluser')->group(function(){
+Route::prefix('alluser')->group(function () {
     Route::get('/view', [AdminProfileController::class, 'AllUsers'])->name('all-users');
 });
 Route::get('/admin/logout', [AdminController::class, 'destroy'])->name('admin.logout');
 
 // Admin Category All routes
-Route::prefix('category')->group(function(){
+Route::prefix('category')->group(function () {
 
     Route::get('/view', [CategoryController::class, 'CategoryView'])->name('all.category');
     Route::post('/store', [CategoryController::class, 'CategoryStore'])->name('category.store');
@@ -108,12 +108,10 @@ Route::prefix('category')->group(function(){
     Route::get('/sub/edit/{id}', [SubCategoryController::class, 'SubCategoryEdit'])->name('subcategory.edit');
     Route::post('/sub/update/{id}', [SubCategoryController::class, 'SubCategoryUpdate'])->name('subcategory.update');
     Route::delete('sub/delete/{id}', [SubCategoryController::class, 'SubCategoryDelete'])->name('subcategory.delete');
-
-
 });
 
 // Admin Manage users
-Route::prefix('adminuser')->group(function(){
+Route::prefix('adminuser')->group(function () {
 
     Route::get('/all', [AdminUserController::class, 'AllAdminRole'])->name('all-admin-user');
     Route::post('/store', [AdminUserController::class, 'StoreAdminUser'])->name('store-admin-user');
@@ -123,7 +121,7 @@ Route::prefix('adminuser')->group(function(){
 });
 
 //admin add slider
-Route::prefix('slider')->group(function(){
+Route::prefix('slider')->group(function () {
 
     Route::get('/view', [SliderController::class, 'ViewSlider'])->name('view.slider');
     Route::post('/store', [SliderController::class, 'StoreSlider'])->name('store.slider');
@@ -143,15 +141,15 @@ Route::post('/user/password/update', [IndexController::class, 'UserPasswordUpdat
 
 //all contact us functions
 //admin
-Route::get('/contactUs',[ContactUsController::class,'viewAllContactUs'])->name('view.allcontactus');
-Route::get('/contactUs/{id}',[ContactUsController::class,'showSubmission'])->name('view.contactus.submission');
-Route::delete('/contactUs/delete/{id}',[ContactUsController::class,'deleteSubmission'])->name('delete.contactus.submission');
+Route::get('/contactUs', [ContactUsController::class, 'viewAllContactUs'])->name('view.allcontactus');
+Route::get('/contactUs/{id}', [ContactUsController::class, 'showSubmission'])->name('view.contactus.submission');
+Route::delete('/contactUs/delete/{id}', [ContactUsController::class, 'deleteSubmission'])->name('delete.contactus.submission');
 
 //user
-Route::post('/contactUs/add',[ContactUsController::class,'addContactSubmission'])->name('add.contactus.submission');
+Route::post('/contactUs/add', [ContactUsController::class, 'addContactSubmission'])->name('add.contactus.submission');
 
 // Admin Coupons All Routes
-Route::prefix('coupons')->group(function(){
+Route::prefix('coupons')->group(function () {
 
     Route::get('/manage', [CouponController::class, 'ViewCoupon'])->name('manage.coupon');
     Route::post('/store', [CouponController::class, 'StoreCoupon'])->name('store.coupon');
@@ -161,7 +159,7 @@ Route::prefix('coupons')->group(function(){
 });
 
 // Admin Products All Routes
-Route::prefix('product')->group(function(){
+Route::prefix('product')->group(function () {
     Route::get('/view', [ProductController::class, 'index'])->name('view.product');
     Route::get('/stock', [ProductController::class, 'ProductStock'])->name('stock.product');
     Route::post('/store', [ProductController::class, 'StoreProduct'])->name('store.product');
@@ -171,23 +169,22 @@ Route::prefix('product')->group(function(){
     Route::delete('/delete/{id}', [ProductController::class, 'DeleteProduct'])->name('product.delete');
     Route::post('/image/update', [ProductController::class, 'MultiImageUpdate'])->name('update.product_image');
     Route::get('/multiimage/delete/{id}', [ProductController::class, 'MultiImageDelete'])->name('product.multiimage_delete');
-
 });
 
 //Cart functions
 //admin
-Route::get('/cart',[CartController::class,'viewAllCarts']);
+Route::get('/cart', [CartController::class, 'viewAllCarts']);
 //user's cart functions
-Route::post('/cart/{product_id}',[CartController::class,'addProductToCart']);
-Route::get('/user/cart',[CartController::class,'MyCart']);
-Route::delete('/cart/{product_id}',[CartController::class,'RemoveCartProduct']);
+Route::post('/cart/{product_id}', [CartController::class, 'addProductToCart']);
+Route::get('/user/cart', [CartController::class, 'MyCart']);
+Route::delete('/cart/{product_id}', [CartController::class, 'RemoveCartProduct']);
 
 //Rate functions
-Route::post('/rate/product/{product_id}',[RateController::class,'AddProductRate'])->name('rate.product');
-Route::delete('/rate/delete/{product_id}',[RateController::class,'DeleteProductRate'])->name('delete.product.rate');
+Route::post('/rate/product/{product_id}', [RateController::class, 'AddProductRate'])->name('rate.product');
+Route::delete('/rate/delete/{product_id}', [RateController::class, 'DeleteProductRate'])->name('delete.product.rate');
 
 // Admin Manage Review Routes
-Route::prefix('review')->group(function(){
+Route::prefix('review')->group(function () {
 
     Route::post('/store', [ReviewController::class, 'StoreReview'])->name('store-review');
 
@@ -200,10 +197,9 @@ Route::prefix('review')->group(function(){
     Route::delete('/delete/{id}', [ReviewController::class, 'DeleteReview'])->name('delete-review');
 
     Route::get('/product/{product_id}', [ReviewController::class, 'GetProductReviews'])->name('get-product-reviews');
-
 });
 // Admin Order
-Route::prefix('orders')->group(function(){
+Route::prefix('orders')->group(function () {
     Route::get('/order/details/{order_id}', [OrderController::class, 'OrdersDetails'])->name('order.details');
     Route::get('/order/ConfirmedOrderDetails/{order_id}', [OrderController::class, 'ConfirmedOrdersDetails'])->name('confirmedOrder.details');
     Route::get('/pending', [OrderController::class, 'PendingOrders'])->name('pending.orders');
@@ -222,31 +218,30 @@ Route::prefix('orders')->group(function(){
     Route::get('/picked/shipped/{order_id}', [OrderController::class, 'PickedToShipped'])->name('picked-shipped');
     Route::get('shipped/delivered/{order_id}', [OrderController::class, 'ShippedToDelivered'])->name('shipped-delivered');
     Route::get('delivered/canceled/{order_id}', [OrderController::class, 'DeliveredToCanceled'])->name('delivered-canceled');
-
 });
 
-Route::group(['prefix'=>'user','namespace' =>'User'], function(){
+Route::group(['prefix' => 'user', 'namespace' => 'User'], function () {
     // Wishlist Routes
-    Route::get('/wishlist',[WishlistController::class, 'ViewWishlist'])->name('wishlist');
+    Route::get('/wishlist', [WishlistController::class, 'ViewWishlist'])->name('wishlist');
     // Get wishlist Product
-    Route::get('/get-wishlist-product',[WishlistController::class, 'GetWishlistProduct']);
+    Route::get('/get-wishlist-product', [WishlistController::class, 'GetWishlistProduct']);
     // wishlist Remove
-    Route::delete('/wishlist-remove/{product_id}',[WishlistController::class, 'RemoveWishlistProduct']);
+    Route::delete('/wishlist-remove/{product_id}', [WishlistController::class, 'RemoveWishlistProduct']);
     // Add To Wishlist Button
-    Route::post('/wishlist/add/{product_id}',[WishlistController::class, 'AddToWishlist']);
+    Route::post('/wishlist/add/{product_id}', [WishlistController::class, 'AddToWishlist']);
     // cash
-    Route::post('cash/order',[CashController::class, 'CashOrder'])->name('cash.order');
+    Route::post('cash/order', [CashController::class, 'CashOrder'])->name('cash.order');
     // My Profile View Orders
-    Route::get('/orders',[AllUserController::class,'MyOrders'])->name('user.orders');
-    Route::get('/details-order/{order_Id}',[AllUserController::class, 'DetailsOrder']);
+    Route::get('/orders', [AllUserController::class, 'MyOrders'])->name('user.orders');
+    Route::get('/details-order/{order_Id}', [AllUserController::class, 'DetailsOrder']);
     // Route to send the return order reason To database Return Order
-    Route::post('/return/order/{order_id}',[AllUserController::class, 'ReturnOrder'])->name('return-order');
+    Route::post('/return/order/{order_id}', [AllUserController::class, 'ReturnOrder'])->name('return-order');
     // Return Order List
-    Route::get('/return/orders/list',[AllUserController::class,'ReturnedOrderList'])->name('returned.orders.list');
+    Route::get('/return/orders/list', [AllUserController::class, 'ReturnedOrderList'])->name('returned.orders.list');
     // cancelled order list
-    Route::get('/cancelled/orders/list',[AllUserController::class,'CancelledOrderList'])->name('cancelled.orders.list');
+    Route::get('/cancelled/orders/list', [AllUserController::class, 'CancelledOrderList'])->name('cancelled.orders.list');
     // Order Tracking in Home Page
-    Route::post('/order/tracking',[AllUserController::class,'OrderTracking'])->name('order-tracking');
+    Route::post('/order/tracking', [AllUserController::class, 'OrderTracking'])->name('order-tracking');
 });
 
 // category Frontend  return all product in this category
@@ -260,53 +255,24 @@ Route::get('subcategory/{subcat_id}', [IndexController::class, 'subCatProduct'])
 Route::get('/product/details/{id}', [IndexController::class, 'DetailsProduct']);
 // Product Search Routes
 Route::get('/search/en/{product_name}', [IndexController::class, 'ProductSearchByName'])->name('product-search-name-en');
-Route::get('/search/color/en/{product_color}',[IndexController::class, 'ProductSearchByColor'])->name('product-search-color-en');
-Route::get('/search/category/en/{product_category}',[IndexController::class, 'ProductSearchByCategory'])->name('product-search-category-en');
-Route::get('/search/price/{max_product_price}',[IndexController::class, 'ProductSearchByPrice'])->name('product-search-price');
+Route::get('/search/color/en/{product_color}', [IndexController::class, 'ProductSearchByColor'])->name('product-search-color-en');
+Route::get('/search/category/en/{product_category}', [IndexController::class, 'ProductSearchByCategory'])->name('product-search-category-en');
+Route::get('/search/price/{max_product_price}', [IndexController::class, 'ProductSearchByPrice'])->name('product-search-price');
 
 // FrontEnd Route Product Details
 Route::get('/product/details/{id}', [IndexController::class, 'DetailsProduct']);
 // Product Search Routes
 Route::get('/search/en/{product_name}', [IndexController::class, 'ProductSearchByName'])->name('product-search-name-en');
-Route::get('/search/color/en/{product_color}',[IndexController::class, 'ProductSearchByColor'])->name('product-search-color-en');
-Route::get('/search/category/en/{product_category}',[IndexController::class, 'ProductSearchByCategory'])->name('product-search-category-en');
-Route::get('/search/price/{max_product_price}',[IndexController::class, 'ProductSearchByPrice'])->name('product-search-price');
+Route::get('/search/color/en/{product_color}', [IndexController::class, 'ProductSearchByColor'])->name('product-search-color-en');
+Route::get('/search/category/en/{product_category}', [IndexController::class, 'ProductSearchByCategory'])->name('product-search-category-en');
+Route::get('/search/price/{max_product_price}', [IndexController::class, 'ProductSearchByPrice'])->name('product-search-price');
 
 // Admin Reports Routes
-Route::prefix('reports')->group(function(){
+Route::prefix('reports')->group(function () {
 
     Route::get('/view', [ReportController::class, 'ViewReport'])->name('all-reports');
     Route::post('/search/by/date', [ReportController::class, 'ReportSearchByDate'])->name('search-by-date');
     Route::post('/search/by/month', [ReportController::class, 'ReportSearchByMonth'])->name('search-by-month');
     Route::post('/search/by/year', [ReportController::class, 'ReportSearchByYear'])->name('search-by-year');
     Route::post('/search/by/color', [ReportController::class, 'ReportSearchByColor'])->name('search-by-color');
-
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
