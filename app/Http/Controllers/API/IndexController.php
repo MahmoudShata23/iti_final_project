@@ -170,8 +170,10 @@ class IndexController extends Controller
 
     public function subCatProduct($subcat_id)
     {
+
         $products = DB::table('products')->where('sub_category_id', $subcat_id)->get();
         if ($products) {
+
             return response()->json([
                 'status' => 200,
                 'message' => $products
@@ -186,7 +188,8 @@ class IndexController extends Controller
 
     public function CatProduct($cat_id)
     {
-        $products = DB::table('products')->where('name', 'like', '%' . $cat_id . '%')->get();
+
+        $products = DB::table('products')->where('category_id', $cat_id)->get();
         if ($products) {
             return response()->json([
                 'status' => 200,
