@@ -15,20 +15,33 @@ class RateController extends Controller
         $matchQuery=['user_id'=>$request->user_id,'product_id'=>$product_id];
         $RateItems=Rate::where($matchQuery)->get();
         if(count($RateItems)>0){
-            return response()->json([
-                'status' => 200,
-                'message' => 'Item already added to wishlist',
+            $validator = $request->validate([
+                'rate'=>'required'
             ]);
+            $update = Rate::where($matchQuery)->update($validator);
+            if ($update){
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'Product updated succesfully',
+                ]);
+            }else{
+                return response()->json([
+                    'status'=>422,
+                    'errors'=> $validator->messages()
+                ]);
+            }
 
         }else{
             $validator = $request->validate([
                 'user_id'=>'required',
-                'product_id'=>'required']);
+                'product_id'=>'required',
+                'rate'=>'required'
+            ]);
             $RateItems=Rate::create($validator);
             if ($RateItems){
                 return response()->json([
                     'status' => 200,
-                    'message' => 'Rate updated succesfully',
+                    'message' => 'Rate added succesfully',
                 ]);
             }else{
                 return response()->json([
@@ -39,16 +52,16 @@ class RateController extends Controller
 
     public function DeleteProductRate($product_id,Request $request){
         $matchQuery=['user_id'=>$request->user_id,'product_id'=>$product_id];
-        $item = Wishlist::where($matchQuery)->get();
+        $item = Rate::where($matchQuery)->get();
         if($item){
-            $item->delete();
+            DB::table('rates')->where($matchQuery)->delete();
             return response()->json([
                 'status'=>200,
-                'message'=>'Wishlist deleted succesfully']);
+                'message'=>'Rate deleted succesfully']);
         } else{
             return response()->json([
                 'status'=>404,
-                'message'=>'Wishlist ID not found']);
+                'message'=>'Wishist ID not found']);
         }
     }
 
