@@ -180,8 +180,11 @@ Route::get('/user/cart', [CartController::class, 'MyCart']);
 Route::delete('/cart/{product_id}', [CartController::class, 'RemoveCartProduct']);
 
 //Rate functions
+
 Route::post('/rate/product/{product_id}', [RateController::class, 'AddProductRate'])->name('rate.product');
 Route::delete('/rate/delete/{product_id}', [RateController::class, 'DeleteProductRate'])->name('delete.product.rate');
+Route::get('/user/rate/{product_id}', [RateController::class, 'GetUserRate'])->name('get.user.rate');
+
 
 // Admin Manage Review Routes
 Route::prefix('review')->group(function () {

@@ -69,14 +69,20 @@ class WishlistController extends Controller
         $matchQuery=['user_id'=>$request->user_id,'product_id'=>$product_id];
         $item = Wishlist::where($matchQuery)->get();
         if($item){
-            $item->delete();
+            $deleted=DB::table('wishlists')->where($matchQuery)->delete();
+            if($deleted){
             return response()->json([
                 'status'=>200,
-                'message'=>'Wishlist deleted succesfully']);
+                'message'=>'Wishlist product deleted succesfully']);
+            }else{
+                return response()->json([
+                    'status'=>404,
+                    'message'=>'No Wishlist product To Delete']);
+            }  
         } else{
             return response()->json([
                 'status'=>404,
-                'message'=>'Wishlist ID not found']);
+                'message'=>'No Wishlist product To Delete']);
         }
     }
 
