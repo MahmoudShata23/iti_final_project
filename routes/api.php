@@ -175,7 +175,7 @@ Route::prefix('product')->group(function () {
 //admin
 Route::get('/cart', [CartController::class, 'viewAllCarts']);
 //user's cart functions
-Route::post('/cart/{product_id}', [CartController::class, 'addProductToCart']);
+Route::post('/cart', [CartController::class, 'addProductToCart']);
 Route::get('/user/cart', [CartController::class, 'MyCart']);
 Route::delete('/cart/{product_id}', [CartController::class, 'RemoveCartProduct']);
 

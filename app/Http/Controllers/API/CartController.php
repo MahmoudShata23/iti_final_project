@@ -23,6 +23,9 @@ class CartController extends Controller
 
     public function MyCart(Request $request)
     {
+        $request->validate([
+            'user_id'=>'required',
+        ]);
         $matchQuery=['user_id'=>$request->user_id];
         $cartItems=Cart::where($matchQuery)->get();
         if ($cartItems) {
@@ -49,9 +52,14 @@ class CartController extends Controller
         }
     }
 
-    public function addProductToCart($product_id,Request $request)
+    public function addProductToCart(Request $request)
     {
-        $matchQuery=['user_id'=>$request->user_id,'product_id'=>$product_id];
+        $validator = $request->validate([
+            'user_id'=>'required',
+            'product_id'=>'required'
+        ]);
+            
+        $matchQuery=['user_id'=>$request->user_id,'product_id'=>$request->product_id];
 
         $cartItem=Cart::where($matchQuery)->first();
 
@@ -65,14 +73,15 @@ class CartController extends Controller
             ]);
 
         }else{
-            $validator = $request->validate([
-                'user_id'=>'required',
-                'product_id'=>'required']);
-            $CartItem=Cart::create($validator);
+            $CartItem=new Cart;
+            $CartItem->user_id=$request->user_id;
+            $CartItem->product_id=$request->product_id;
+            $CartItem->count=1;
             if ($CartItem){
+                $CartItem->save();
                 return response()->json([
                     'status' => 200,
-                    'message' => 'Product updated succesfully',
+                    'message' => 'Product added succesfully',
                 ]);
             }else{
                 return response()->json([
@@ -84,10 +93,13 @@ class CartController extends Controller
 
     public function RemoveCartProduct($product_id,Request $request)
     {
+        $request->validate([
+            'user_id'=>'required'
+        ]);
         $matchQuery=['user_id'=>$request->user_id,'product_id'=>$product_id];
-        $item = Cart::where($matchQuery)->get();
+        $item = Cart::where($matchQuery)->first();
         if($item){
-            $item->delete();
+            DB::table('carts')->where($matchQuery)->delete();
             return response()->json([
                 'status'=>200,
                 'message'=>'Cart deleted succesfully']);
