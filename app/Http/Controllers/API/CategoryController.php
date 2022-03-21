@@ -49,7 +49,7 @@ class CategoryController extends Controller
             if ($op) {
                 return response()->json([
                     'status' => 200,
-                    'message' => 'category added succesfully',
+                    'message' => 'success',
                 ]);
             } else {
                 return response()->json([
@@ -88,7 +88,7 @@ class CategoryController extends Controller
         if ($op){
             return response()->json([
                 'status' => 200,
-                'message' => 'Category updated succesfully',
+                'message' => 'success',
             ]);
         }else{
             return response()->json([

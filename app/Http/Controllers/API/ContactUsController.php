@@ -17,10 +17,12 @@ class ContactUsController extends Controller
 
         if ($ContactUs) {
             return response()->json([
+
                 'status' => 200,
                 'ALLContactUs' => $ContactUs
             ]);
         } else {
+
             return response()->json([
                 'status' => 404,
                 'message' => "No ContactUs found"
@@ -35,6 +37,7 @@ class ContactUsController extends Controller
 
         if ($ContactUs) {
             return response()->json([
+
                 'status' => 200,
                 'ContactUs' => $ContactUs
             ]);
@@ -80,7 +83,7 @@ class ContactUsController extends Controller
         if ($op) {
             return response()->json([
                 'status' => 200,
-                'message' => 'ContactUs added succesfully',
+                'message' => 'success',
             ]);
         } else {
             return response()->json([

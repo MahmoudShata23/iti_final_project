@@ -48,7 +48,7 @@ class SubCategoryController extends Controller
             if ($op) {
                 return response()->json([
                     'status' => 200,
-                    'message' => 'Subcategory added succesfully',
+                    'message' => 'success',
                 ]);
             } else {
                 return response()->json([
@@ -103,7 +103,7 @@ class SubCategoryController extends Controller
         if ($op){
             return response()->json([
                 'status' => 200,
-                'message' => 'SubCategory updated succesfully',
+                'message' => 'success',
             ]);
         }else{
             return response()->json([

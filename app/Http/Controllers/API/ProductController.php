@@ -100,28 +100,28 @@ class ProductController extends Controller
     public function UpdateProduct(Request $request, $id)
     {
         $validator = $request->validate([
+
             'brand' => 'required',
             'category_id' => 'required',
             'sub_category_id' => 'required',
-            'name' => 'required|max:191',
-            'description' => 'required|max:191',
-            'product_qty' => 'required|max:20',
-            'tags' => 'required|max:20',
-            'product_size' => 'required|max:191',
-            'color' => 'required|max:191',
-            'selling_price' => 'required|max:20',
-            'discount_price' => 'required|max:20',
-            'short_desc' => 'required|max:191',
+            'name' => 'required',
+            'description' => 'required',
+            'product_qty' => 'required',
+            'tags' => 'required',
+            'product_size' => 'required',
+            'color' => 'required',
+            'selling_price' => 'required',
+            'discount_price' => 'required',
+            'short_desc' => 'required',
             'status' => 'required',
-            'avgRate' => 'required',
-            'image' => 'required',
+            'avgRate' => 'required'
 
         ]);
         $op = Product::where('id', $request->id)->update($validator);
         if ($op) {
             return response()->json([
                 'status' => 200,
-                'message' => 'Product updated succesfully',
+                'message' => 'success',
             ]);
         } else {
             return response()->json([
