@@ -45,7 +45,7 @@ class SliderController extends Controller
             if ($op) {
                 return response()->json([
                     'status' => 200,
-                    'message' => 'Slider added succesfully',
+                    'message' => 'success',
                 ]);
             } else {
                 return response()->json([

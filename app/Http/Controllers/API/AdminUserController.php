@@ -41,7 +41,7 @@ class AdminUserController extends Controller
         if ($op){
             return response()->json([
                 'status' => 200,
-                'message' => 'User added succesfully',
+                'message' => 'success',
             ]);
         }else {
             return response()->json([
