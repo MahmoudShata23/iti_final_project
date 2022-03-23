@@ -42,7 +42,7 @@ class CartController extends Controller
             }
             return response()->json([
                 'status' => 200,
-                'Cart' => $cartItems,
+                'Cart' => CartResource::collection($cartItems),
             ]);
 
         }else{
