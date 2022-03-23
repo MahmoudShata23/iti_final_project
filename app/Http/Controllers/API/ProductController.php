@@ -9,7 +9,9 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\MultiImage;
+use App\Models\Subscription;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Mail;
 
 class ProductController extends Controller
 {
@@ -50,6 +52,8 @@ class ProductController extends Controller
         }
         $op = Product::create($validator);
         if ($op) {
+            $product=Product::latest('id')->first();
+            $this->send_product_update($product);
             return response()->json([
                 'status' => 200,
                 'message' => 'Product added succesfully',
@@ -59,6 +63,30 @@ class ProductController extends Controller
                 'status' => 422,
                 'errors' => $validator->messages()
             ]);
+        }
+    }
+    public function send_product_update(Product $product){
+        $data = array('id'=>$product->id,'name'=>$product->name,'description'=>$product->description,'price'=>$this->calculatePrice($product));
+        $subscriptions = Subscription::all();
+        if($subscriptions){
+            $users=array();
+            foreach($subscriptions as $subscription){
+                array_push($users,$subscription->email);
+            }
+            Mail::send('productmail',$data,function($message) use ($product,$users) {
+                $message->bcc($users)->subject('New Product Added');
+                $message->attach(public_path('/uploads/product/'.$product->image));
+                $message->from('nada.usama.ahmed@gmail.com','Furniture Store');
+            });
+        }
+
+    }
+
+    public function calculatePrice(Product $product){
+        if($product->discount_price){
+            return intval($product->selling_price)-intval($product->discount_price);
+        }else{
+            return intval($product->selling_price);
         }
     }
     public function MultiImageUpdate(Request $request)

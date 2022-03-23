@@ -28,6 +28,7 @@ use App\Http\Controllers\API\SubCategoryController;
 use App\Http\Controllers\API\AdminProfileController;
 use App\Http\Controllers\API\ContactUsController;
 use App\Http\Controllers\API\RateController;
+use App\Http\Controllers\API\EmailSubscriptionController;
 
 
 /*
@@ -279,3 +280,6 @@ Route::prefix('reports')->group(function () {
     Route::post('/search/by/year', [ReportController::class, 'ReportSearchByYear'])->name('search-by-year');
     Route::post('/search/by/color', [ReportController::class, 'ReportSearchByColor'])->name('search-by-color');
 });
+
+Route::post('/subscribe',[EmailSubscriptionController::class,'SubscribeToUpdates'])->name('subscribe-to-updates');
+Route::delete('/unsubscribe/{email}',[EmailSubscriptionController::class,'UnsubscribeToUpdates'])->name('unsubscribe-to-updates');
