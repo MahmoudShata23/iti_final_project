@@ -71,15 +71,20 @@ Route::get('/language/english', [LanguageController::class, 'English'])->name('e
 
 
 
-
-
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // admin Profile Controller
 
 Route::get('/admin/profile/{id}', [AdminProfileController::class, 'AdminProfile'])->name('admin.profile');
-Route::post('/admin/create', [AdminProfileController::class, 'AdminCreateProfile'])->name('admin.create.profile');
+
+Route::post('/signup', [AdminProfileController::class, 'SignUp'])->name('admin.SignUp');
+Route::post("/login",[AdminProfileController::class, 'AdminLogin'])->name('admin.profile');
+Route::get('/logout', [AdminController::class, 'logout'])->name('admin.logout');
+Route::get('/getAuthdAdmin', [AdminController::class, 'getAuthdAdmin'])->name('admin.getAuthdAdmin');
+Route::get('/change/password/{id}', [AdminProfileController::class, 'AdminChangePassword'])->name('admin.change.password');
+Route::post('/update/password/{id}', [AdminProfileController::class, 'AdminUpdatePassword'])->name('admin.update.password');
+
+
 Route::get('edit/admin/{id}', [AdminProfileController::class, 'EditAdminProfile'])->name('edit.admin.profile');
 Route::post('admin/update/{id}', [AdminProfileController::class, 'UpdateAdminProfile'])->name('admin.profile.update');
 Route::delete('destory/admin/{id}', [AdminProfileController::class, 'destoryAdminProfile'])->name('admin.profile.destory');
