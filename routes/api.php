@@ -29,6 +29,7 @@ use App\Http\Controllers\API\AdminProfileController;
 use App\Http\Controllers\API\ContactUsController;
 use App\Http\Controllers\API\RateController;
 use App\Http\Controllers\API\EmailSubscriptionController;
+use App\Http\Controllers\API\FatoorahController;
 
 
 /*
@@ -283,3 +284,7 @@ Route::prefix('reports')->group(function () {
 
 Route::post('/subscribe',[EmailSubscriptionController::class,'SubscribeToUpdates'])->name('subscribe-to-updates');
 Route::delete('/unsubscribe/{email}',[EmailSubscriptionController::class,'UnsubscribeToUpdates'])->name('unsubscribe-to-updates');
+
+//myfatoorah
+Route::post('pay', [FatoorahController::class,"payOrder"]); //add middle ware
+Route::get('call_back', [FatoorahController::class,"paymentCallBack"]);

@@ -10,8 +10,17 @@ class EmailSubscriptionController extends Controller
 {
     public function SubscribeToUpdates(Request $request){
         $validator = $request->validate([
-            'email' => 'required|email|unique:subscriptions'
+            'email' => 'required|email'
         ]);
+        $matchQuery=['email'=>$request->email];
+        
+        $subscription=Subscription::where($matchQuery)->first();
+        if($subscription){
+            return response()->json([
+                'status'=>200,
+                'message'=>'email existed'
+            ]);
+        }
 
         $subscription=Subscription::create($validator);
 
