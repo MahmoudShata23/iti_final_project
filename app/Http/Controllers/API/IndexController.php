@@ -38,7 +38,7 @@ class IndexController extends Controller
     {
     }
 
-    public function UserProfile(Request $request, $id)
+    public function UserProfile($id)
     {
         $User = User::find($id);
 
@@ -55,29 +55,35 @@ class IndexController extends Controller
         }
     }
 
-    public function UserProfileUpdate(Request $request, $id)
+    public function UserProfileUpdate($id,Request $request)
     {
-        $user = User::find($request->id);
-        if ($user) {
-            $validate = $this->profileUpdateValidation($user->email, $request);
-            if ($validate != null) {
-                return $validate;
-            }
-        } else {
+              
             $validator = $request->validate([
-                'name' => 'required',
-                'email' => 'required',
+                'name' => 'required|min:3',
+                'email' => 'required|email',
                 'address' => 'required',
                 'city' => 'required',
-                'phone' => 'required',
+                'phone' => 'required|regex:/(01)[0-9]{9}/',
                 'region' => 'required'
             ]);
+            $matchQuery=['id'=>$id];
+            $user=User::where($matchQuery)->first();
+            if($user->email!=$request->email){
+                $matchQuery=['email'=>$request->email];
+                $user=User::where($matchQuery)->first();
+                if($user){
+                    return response()->json([
+                        'status'=>422,
+                        'message'=>'Email Already Exists'
+                    ]);
+                }
+            }
 
-            $op = User::where('id', $request->id)->update($validator);
+            $op = User::where('id', $id)->update($validator);
             if ($op) {
                 return response()->json([
                     'status' => 200,
-                    'message' => 'Admin updated succesfully',
+                    'message' => 'User updated succesfully',
                 ]);
             } else {
                 return response()->json([
@@ -85,7 +91,6 @@ class IndexController extends Controller
                     'errors' => $validator->messages()
                 ]);
             }
-        }
     }
 
     public function profileUpdateValidation($email, $request)

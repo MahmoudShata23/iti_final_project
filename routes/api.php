@@ -135,8 +135,8 @@ Route::prefix('slider')->group(function () {
 //all users routes
 Route::get('/', [IndexController::class, 'index']);
 Route::get('/user/logout', [IndexController::class, 'UserLogout'])->name('user.logout');
-Route::get('/user/profile', [IndexController::class, 'UserProfile'])->name('user.profile');
-Route::post('/user/profile/update', [IndexController::class, 'UserProfileUpdate'])->name('user.profile.edit');
+Route::get('/user/profile/{id}', [IndexController::class, 'UserProfile'])->name('user.profile');
+Route::post('/user/profile/update/{id}', [IndexController::class, 'UserProfileUpdate'])->name('user.profile.edit');
 Route::get('/user/password/', [IndexController::class, 'UserPassword'])->name('user.password');
 Route::post('/user/password/update', [IndexController::class, 'UserPasswordUpdate'])->name('user.password.update');
 
@@ -234,8 +234,6 @@ Route::group(['prefix' => 'user', 'namespace' => 'User'], function () {
     Route::delete('/wishlist-remove/{product_id}', [WishlistController::class, 'RemoveWishlistProduct']);
     // Add To Wishlist Button
     Route::post('/wishlist/add/{product_id}', [WishlistController::class, 'AddToWishlist']);
-    // cash
-    Route::post('cash/order', [CashController::class, 'CashOrder'])->name('cash.order');
     // My Profile View Orders
     Route::get('/orders', [AllUserController::class, 'MyOrders'])->name('user.orders');
     Route::get('/details-order/{order_Id}', [AllUserController::class, 'DetailsOrder']);
@@ -288,3 +286,4 @@ Route::delete('/unsubscribe/{email}',[EmailSubscriptionController::class,'Unsubs
 //myfatoorah
 Route::post('pay', [FatoorahController::class,"payOrder"]); //add middle ware
 Route::get('call_back', [FatoorahController::class,"paymentCallBack"]);
+Route::post('cash/order', [FatoorahController::class, 'CashOrder'])->name('cash.order');
