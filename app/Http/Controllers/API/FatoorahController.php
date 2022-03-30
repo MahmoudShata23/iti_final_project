@@ -58,14 +58,14 @@ class FatoorahController extends Controller
     $orderObject->address=$user->address.", ".$user->city.", ".$user->region;
     $orderObject->payment_type=$paymentData['Data']['InvoiceTransactions']['0']['PaymentGateway'];
     $orderObject->currency=$paymentData['Data']['InvoiceTransactions']['0']['Currency'];
-    $orderObject->amount=floatval(explode(" ", $paymentData['Data']['InvoiceDisplayValue'])[0]);
+    $orderObject->amount=floatval(explode(" ", str_replace(array(','), '',$paymentData['Data']['InvoiceDisplayValue']))[0]);
     $orderObject->invoice_number=$paymentData['Data']['InvoiceId'];
     $orderObject->order_date=now()->day;
     $orderObject->order_month=now()->month;
     $orderObject->order_year=now()->year;
     $orderObject->save();
     
-    return  redirect('http://localhost:4200/home');
+    return  redirect('http://localhost:4200/user-orders');
     //in database search with invoice id to get the customer
     }
     
@@ -94,5 +94,39 @@ class FatoorahController extends Controller
             'status'=>200,
             'message'=>'order added successfully'
         ]);
+    }
+
+    public function UserOrder($email){
+        $matchQuery=['email'=>$email];
+
+        $orders=Order::where($matchQuery)->get();
+
+        if(count($orders)>0){
+            return response()->json([
+                'status'=>200,
+                'orders'=>$orders
+            ]);
+        }else{
+            return response()->json([
+                'status'=>422,
+                'orders'=>'there are no orders'
+            ]);
+        }
+    }
+
+    public function DeleteUserOrder($id){
+        $deleted = Order::where(['id'=>$id])->first();
+        if($deleted){
+            $deleted->delete();
+            return response()->json([
+                'status'=>200,
+                'message'=>'deleted successfully'
+            ]);
+        }else{
+            return response()->json([
+                'status'=>404,
+                'message'=>'id not found'
+            ]);
+        }
     }
 }
