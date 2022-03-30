@@ -287,3 +287,5 @@ Route::delete('/unsubscribe/{email}',[EmailSubscriptionController::class,'Unsubs
 Route::post('pay', [FatoorahController::class,"payOrder"]); //add middle ware
 Route::get('call_back', [FatoorahController::class,"paymentCallBack"]);
 Route::post('cash/order', [FatoorahController::class, 'CashOrder'])->name('cash.order');
+Route::get('user/orders/{email}',[FatoorahController::class,'UserOrder'])->name('user.order');
+Route::delete('user/order/{id}',[FatoorahController::class,'DeleteUserOrder'])->name('delete.user.order');
