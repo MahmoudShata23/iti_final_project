@@ -15,15 +15,17 @@ class ContactUsController extends Controller
     {
         $ContactUs = ContactUs::all();
 
-        if($ContactUs){
+        if ($ContactUs) {
             return response()->json([
-                'status'=>200,
-                'ALLContactUs' => $ContactUs ]);
-        }
-        else {
+
+                'status' => 200,
+                'ALLContactUs' => $ContactUs
+            ]);
+        } else {
+
             return response()->json([
-                'status'=>404,
-                'message'=> "No ContactUs found"
+                'status' => 404,
+                'message' => "No ContactUs found"
             ]);
         }
     }
@@ -33,14 +35,17 @@ class ContactUsController extends Controller
     {
         $ContactUs = ContactUs::find($id);
 
-        if($ContactUs){
+        if ($ContactUs) {
             return response()->json([
-                'status'=>200,
-                'ContactUs'=>$ContactUs ]);
+
+                'status' => 200,
+                'ContactUs' => $ContactUs
+            ]);
         } else {
             return response()->json([
-                'status'=>404,
-                'message'=>'No ContactUs id found' ]);
+                'status' => 404,
+                'message' => 'No ContactUs id found'
+            ]);
         }
     }
     //Admin delete specific contact us submission
@@ -48,15 +53,17 @@ class ContactUsController extends Controller
     {
         $ContactUs = ContactUs::find($id);
 
-        if($ContactUs){
+        if ($ContactUs) {
             $ContactUs->delete();
             return response()->json([
-                'status'=>200,
-                'message'=>'ContactUs deleted succesfully']);
-        } else{
+                'status' => 200,
+                'message' => 'ContactUs deleted succesfully'
+            ]);
+        } else {
             return response()->json([
-                'status'=>404,
-                'message'=>'ContactUs ID not found']);
+                'status' => 404,
+                'message' => 'ContactUs ID not found'
+            ]);
         }
     }
 
@@ -65,23 +72,23 @@ class ContactUsController extends Controller
     public function addContactSubmission(Request $request)
     {
         $validator = $request->validate([
-            'fname'=>'required|min:3',
-            'lname'=>'required|min:3',
-            'email'=>'required|email',
-            'message'=>'required'
+            'fname' => 'required|min:3',
+            'lname' => 'required|min:3',
+            'email' => 'required|email',
+            'message' => 'required'
         ]);
 
         $op = ContactUs::create($validator);
 
-        if ($op){
+        if ($op) {
             return response()->json([
                 'status' => 200,
                 'message' => 'success',
             ]);
-        }else {
+        } else {
             return response()->json([
-                'status'=>422,
-                'errors'=> $validator->messages()
+                'status' => 422,
+                'errors' => $validator->messages()
             ]);
         }
     }

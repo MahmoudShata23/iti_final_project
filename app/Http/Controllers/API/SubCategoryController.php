@@ -22,11 +22,30 @@ class SubCategoryController extends Controller
         ]);
     }
 
+    public function Category_Subcategories($category_id){
+        $matchQuery=['category_id'=>$category_id];
+
+        $subcategories=SubCategory::where($matchQuery)->get();
+
+        if($subcategories){
+            return response()->json([
+                'status'=>200,
+                'subcategories'=>$subcategories
+            ]);
+        }else{
+            return response()->json([
+                'status'=>422,
+                'message'=>'no subcategories found'
+            ]);
+        }
+    }
+
     public function SubCategoryStore(Request $request)
     {
-        $validator = $request->validate([
+        $request->validate([
             'name'=>'required',
             'description'=>'required',
+            'category_id'=>'required|numeric',
             'image'=>'required|max:2048|image|mimes:png,jpg,jpeg',
         ]);
 
@@ -40,22 +59,18 @@ class SubCategoryController extends Controller
 
             $file->move('uploads/subcategory/', $fileName);
 
-            $validator['image'] = $fileName;
+            $subcategory=new SubCategory;
+            $subcategory->name=$request->name;
+            $subcategory->description=$request->description;
+            $subcategory->category_id=intval($request->category_id);
+            $subcategory->image = $fileName;
+            $subcategory->save();
 
-
-            $op = SubCategory::create($validator);
-
-            if ($op) {
-                return response()->json([
-                    'status' => 200,
-                    'message' => 'success',
-                ]);
-            } else {
-                return response()->json([
-                    'status' => 422,
-                    'errors' => $validator->messages()
-                ]);
-            }
+            return response()->json([
+                'status' => 200,
+                'message' => 'success',
+            ]);
+            
         }
     }
 
