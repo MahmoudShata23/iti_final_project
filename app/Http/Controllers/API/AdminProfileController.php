@@ -201,7 +201,7 @@ class AdminProfileController extends Controller
             'access_token' => $user->createToken($request->email)->plainTextToken,
             
         ]);
-
+////
         /*
         try {
             $credentials = $request->only('email', 'password');
