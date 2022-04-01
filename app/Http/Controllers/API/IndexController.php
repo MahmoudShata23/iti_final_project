@@ -14,7 +14,9 @@ use App\Models\SubCategory;
 use App\Models\Product;
 use App\Rules\UserPasswordRule;
 use DB;
-
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 class IndexController extends Controller
 {
     public function index($id)
@@ -34,10 +36,7 @@ class IndexController extends Controller
         }
     }
 
-    public function UserLogout()
-    {
-    }
-
+   
     public function UserProfile($id)
     {
         $User = User::find($id);
@@ -271,4 +270,87 @@ class IndexController extends Controller
             ]);
         }
     }
+    public function signup(Request $request)
+    {
+        $validator = $request->validate([
+            'name' => 'required',
+            'email' => 'required',
+            'address' => 'required',
+            'city' => 'required',
+            'phone' => 'required',
+            'password' => 'required',
+            'region' => 'required'
+        ]);
+        $validator['password'] = bcrypt($validator['password']);
+        $op = User::create($validator);
+        if ($op) {
+            return response()->json([
+                'status' => 200,
+                'message' => 'success',
+            ]);
+        } else {
+            return response()->json([
+                'status' => 422,
+                'errors' => 'users not  added succesfully',
+            ]);
+        }
+    }
+    public function destoryAdminProfile($id)
+    {
+        $users = User::find($id);
+
+        if ($users) {
+            $users->delete();
+            return response()->json([
+                'status' => 200,
+                'message' => 'users deleted succesfully'
+            ]);
+        } else {
+            return response()->json([
+                'status' => 404,
+                'message' => 'users ID not found'
+            ]);
+        }
+    }
+    public function login(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            throw ValidationException::withMessages([
+                'email' => ['The provided credentials are incorrect.'],
+            ]);
+        }
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'users log in succesfully',
+            'user' => $user,
+            'access_token' => $user->createToken($request->email)->plainTextToken,
+            
+        ]);
+
+    }
+    public function logout(Request $request)
+    {
+
+        // Revoke the token that was used to authenticate the current request
+        $request->user()->currentAccessToken()->delete();
+        //$request->user->tokens()->delete(); // use this to revoke all tokens (logout from all devices)
+        return response()->json([
+            'status' => 200,
+            'message' => 'users logout succesfully',
+            
+        ]);
+    }
+    public function getAuthdAdmin(Request $request)
+    {
+        return $request->user();
+    }
+    
 }

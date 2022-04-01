@@ -60,7 +60,7 @@ Route::get('/admin/profile/{id}', [AdminProfileController::class, 'AdminProfile'
 
 Route::post('/signup', [AdminProfileController::class, 'SignUp'])->name('admin.SignUp');
 Route::post("/login",[AdminProfileController::class, 'AdminLogin'])->name('admin.profile');
-Route::get('/logout', [AdminController::class, 'logout'])->name('admin.logout');
+Route::get('/logout', [AdminController::class, 'logout'])->name('admin.logout')->middleware('auth:sanctum');
 Route::get('/getAuthdAdmin', [AdminController::class, 'getAuthdAdmin'])->name('admin.getAuthdAdmin');
 Route::get('/change/password/{id}', [AdminProfileController::class, 'AdminChangePassword'])->name('admin.change.password');
 Route::post('/update/password/{id}', [AdminProfileController::class, 'AdminUpdatePassword'])->name('admin.update.password');
@@ -71,6 +71,7 @@ Route::delete('destory/admin/{id}', [AdminProfileController::class, 'destoryAdmi
 Route::get('admin/change/password/{id}', [AdminProfileController::class, 'AdminChangePassword'])->name('admin.change.password');
 Route::post('admin/update/password/{id}', [AdminProfileController::class, 'AdminUpdatePassword'])->name('admin.update.password');
 // Admin Get All Users
+//http://127.0.0.1:8000/api/alluser/view
 Route::prefix('alluser')->group(function () {
     Route::get('/view', [AdminProfileController::class, 'AllUsers'])->name('all-users');
 });
@@ -205,13 +206,20 @@ Route::group(['prefix' => 'user', 'namespace' => 'User'], function () {
 
 
         //all users routes
-    Route::get('/', [IndexController::class, 'index']);
-    Route::get('/user/logout', [IndexController::class, 'UserLogout'])->name('user.logout');
-    Route::get('/user/profile/{id}', [IndexController::class, 'UserProfile'])->name('user.profile');
-    Route::post('/user/profile/update/{id}', [IndexController::class, 'UserProfileUpdate'])->name('user.profile.edit');
-    Route::get('/user/password/', [IndexController::class, 'UserPassword'])->name('user.password');
-    Route::post('/user/password/update', [IndexController::class, 'UserPasswordUpdate'])->name('user.password.update');
-
+    Route::get('/index', [IndexController::class, 'index']);
+    Route::get('/profile/{id}', [IndexController::class, 'UserProfile'])->name('user.profile');
+    Route::post('/profile/update/{id}', [IndexController::class, 'UserProfileUpdate'])->name('user.profile.edit');
+    Route::get('/password/', [IndexController::class, 'UserPassword'])->name('user.password');
+    Route::post('/password/update', [IndexController::class, 'UserPasswordUpdate'])->name('user.password.update');
+    ////http://127.0.0.1:8000/api/user/signup
+    Route::post('/signup', [IndexController::class, 'signup'])->name('User.signup');
+    //http://127.0.0.1:8000/api/user/login
+    Route::post("/login",[IndexController::class, 'login'])->name('User.login');
+    //http://127.0.0.1:8000/api/user/logout
+    Route::post('/logout', [IndexController::class, 'logout'])->name('User.logout')->middleware('auth:sanctum');
+    Route::get('/getAuthdAdmin', [IndexController::class, 'getAuthdAdmin'])->name('User.getAuthdAdmin');
+    Route::get('/change/password/{id}', [IndexController::class, 'UserChangePassword'])->name('User.change.password');
+    Route::post('/update/password/{id}', [IndexController::class, 'UserUpdatePassword'])->name('User.update.password');
 
 
 
