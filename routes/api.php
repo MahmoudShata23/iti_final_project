@@ -52,27 +52,6 @@ Route::get('/language/arbic', [LanguageController::class, 'arbic'])->name('arbic
 Route::get('/language/english', [LanguageController::class, 'English'])->name('english.language');
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // admin Profile Controller
@@ -85,7 +64,6 @@ Route::get('/logout', [AdminController::class, 'logout'])->name('admin.logout');
 Route::get('/getAuthdAdmin', [AdminController::class, 'getAuthdAdmin'])->name('admin.getAuthdAdmin');
 Route::get('/change/password/{id}', [AdminProfileController::class, 'AdminChangePassword'])->name('admin.change.password');
 Route::post('/update/password/{id}', [AdminProfileController::class, 'AdminUpdatePassword'])->name('admin.update.password');
-
 
 Route::get('edit/admin/{id}', [AdminProfileController::class, 'EditAdminProfile'])->name('edit.admin.profile');
 Route::post('admin/update/{id}', [AdminProfileController::class, 'UpdateAdminProfile'])->name('admin.profile.update');
@@ -137,14 +115,6 @@ Route::prefix('slider')->group(function () {
     Route::post('/update/{id}', [SliderController::class, 'UpdateSlider'])->name('update.slider');
     Route::get('/delete/{id}', [SliderController::class, 'DeleteSlider'])->name('delete.slider');
 });
-
-//all users routes
-Route::get('/', [IndexController::class, 'index']);
-Route::get('/user/logout', [IndexController::class, 'UserLogout'])->name('user.logout');
-Route::get('/user/profile/{id}', [IndexController::class, 'UserProfile'])->name('user.profile');
-Route::post('/user/profile/update/{id}', [IndexController::class, 'UserProfileUpdate'])->name('user.profile.edit');
-Route::get('/user/password/', [IndexController::class, 'UserPassword'])->name('user.password');
-Route::post('/user/password/update', [IndexController::class, 'UserPasswordUpdate'])->name('user.password.update');
 
 
 //all contact us functions
@@ -232,6 +202,19 @@ Route::prefix('orders')->group(function () {
 });
 
 Route::group(['prefix' => 'user', 'namespace' => 'User'], function () {
+
+
+        //all users routes
+    Route::get('/', [IndexController::class, 'index']);
+    Route::get('/user/logout', [IndexController::class, 'UserLogout'])->name('user.logout');
+    Route::get('/user/profile/{id}', [IndexController::class, 'UserProfile'])->name('user.profile');
+    Route::post('/user/profile/update/{id}', [IndexController::class, 'UserProfileUpdate'])->name('user.profile.edit');
+    Route::get('/user/password/', [IndexController::class, 'UserPassword'])->name('user.password');
+    Route::post('/user/password/update', [IndexController::class, 'UserPasswordUpdate'])->name('user.password.update');
+
+
+
+
     // Wishlist Routes
     Route::get('/wishlist', [WishlistController::class, 'ViewWishlist'])->name('wishlist');
     // Get wishlist Product
