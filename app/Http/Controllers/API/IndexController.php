@@ -326,13 +326,24 @@ class IndexController extends Controller
                 'email' => ['The provided credentials are incorrect.'],
             ]);
         }
-
+        /*
+        $today = date("F j, Y, g:i a");           // March 10, 2001, 5:16 pm
+$today = date("m.d.y");                           // 03.10.01
+$today = date("j, n, Y");                         // 10, 3, 2001
+$today = date("Ymd");                             // 20010310
+$today = date('h-i-s, j-m-y, it is w Day');       // 05-16-18, 10-03-01, 1631 1618 6 Satpm01
+$today = date('\i\t \i\s \t\h\e jS \d\a\y.');     // It is the 10th day (10ème jour du mois).
+$today = date("D M j G:i:s T Y");                 // Sat Mar 10 17:16:18 MST 2001
+$today = date('H:m:s \m \e\s\t\ \l\e\ \m\o\i\s'); // 17:03:18 m est le mois
+$today = date("H:i:s");                           // 17:16:18
+$today = date("Y-m-d H:i:s");                     // 2001-03-10 17:16:18 (le format DATETIME de MySQL)
+        */
         return response()->json([
             'status' => 200,
             'message' => 'users log in succesfully',
             'user' => $user,
             'access_token' => $user->createToken($request->email)->plainTextToken,
-            
+            'token_expires_at' => date()
         ]);
 
     }
