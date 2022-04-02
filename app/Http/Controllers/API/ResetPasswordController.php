@@ -16,15 +16,16 @@ use Illuminate\Support\Facades\Hash;
 
 class ResetPasswordController extends Controller
 {
-    public function ForgetPassword(Request $request){
+    public function ForgetPassword(Request $request)
+    {
         $request->validate([
-            'email'=>'required|email'
+            'email' => 'required|email'
         ]);
-        $matchQuery=['email'=>$request->email];
-        $user=User::where($matchQuery)->first();
-        if($user){
-            $row=PasswordReset::where($matchQuery)->first();
-            if($row){
+        $matchQuery = ['email' => $request->email];
+        $user = User::where($matchQuery)->first();
+        if ($user) {
+            $row = PasswordReset::where($matchQuery)->first();
+            if ($row) {
                 DB::table('password_resets')->where($matchQuery)->delete();
             }
             DB::table('password_resets')->insert([
@@ -32,53 +33,54 @@ class ResetPasswordController extends Controller
                 'token' => Str::random(60),
                 'created_at' => Carbon::now()
             ]);
-            $row=PasswordReset::where($matchQuery)->first();
+            $row = PasswordReset::where($matchQuery)->first();
             $this->send_reset_email($row);
             return response()->json([
-                'status'=>200,
-                'message'=>'success'
+                'status' => 200,
+                'message' => 'success'
             ]);
-        }else{
+        } else {
             return response()->json([
-                'status'=>422,
-                'message'=>'failed'
+                'status' => 422,
+                'message' => 'failed'
             ]);
         }
     }
-    
+
     public function send_reset_email($user)
     {
         $data = array('token' => $user->token);
-       
+
         Mail::send('reset_password', $data, function ($message) use ($user) {
             $message->bcc($user->email)->subject('Reset Password');
             $message->from('mshata176@gmail.com', 'Furniture Store');
         });
-        
     }
 
-    public function ResetPassword(Request $request){
+    public function ResetPassword(Request $request)
+    {
         $request->validate([
-            'token'=>'required',
-            'email'=>'required|email',
-            'password'=> ['required','min:3','max:9',new UserPasswordRule]
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => ['required', 'min:3', 'max:9', new UserPasswordRule]
         ]);
 
-        $matchQuery=['email'=>$request->email];
-        $row=PasswordReset::where($matchQuery)->first();
-        if($row->token==$request->token){
-            $user=User::where($matchQuery)->first();
-            $user->password=Hash::make($request->password);
+
+        $matchQuery = ['email' => $request->email];
+        $row = PasswordReset::where($matchQuery)->first();
+        if ($row->token == $request->token) {
+            $user = User::where($matchQuery)->first();
+            $user->password = Hash::make($request->password);
             $user->save();
             DB::table('password_resets')->where($matchQuery)->delete();
             return response()->json([
-                'status'=>200,
-                'message'=>'success'
+                'status' => 200,
+                'message' => 'success'
             ]);
-        }else{
+        } else {
             return response()->json([
-                'status'=>200,
-                'message'=>'failed'
+                'status' => 200,
+                'message' => 'failed'
             ]);
         }
     }
