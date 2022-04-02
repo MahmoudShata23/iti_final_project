@@ -17,6 +17,7 @@ use DB;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+
 class IndexController extends Controller
 {
     public function index($id)
@@ -36,7 +37,7 @@ class IndexController extends Controller
         }
     }
 
-   
+
     public function UserProfile($id)
     {
         $User = User::find($id);
@@ -54,42 +55,42 @@ class IndexController extends Controller
         }
     }
 
-    public function UserProfileUpdate($id,Request $request)
+    public function UserProfileUpdate($id, Request $request)
     {
-              
-            $validator = $request->validate([
-                'name' => 'required|min:3',
-                'email' => 'required|email',
-                'address' => 'required',
-                'city' => 'required',
-                'phone' => 'required|regex:/(01)[0-9]{9}/',
-                'region' => 'required'
-            ]);
-            $matchQuery=['id'=>$id];
-            $user=User::where($matchQuery)->first();
-            if($user->email!=$request->email){
-                $matchQuery=['email'=>$request->email];
-                $user=User::where($matchQuery)->first();
-                if($user){
-                    return response()->json([
-                        'status'=>422,
-                        'message'=>'Email Already Exists'
-                    ]);
-                }
-            }
 
-            $op = User::where('id', $id)->update($validator);
-            if ($op) {
-                return response()->json([
-                    'status' => 200,
-                    'message' => 'User updated succesfully',
-                ]);
-            } else {
+        $validator = $request->validate([
+            'name' => 'required|min:3',
+            'email' => 'required|email',
+            'address' => 'required',
+            'city' => 'required',
+            'phone' => 'required|regex:/(01)[0-9]{9}/',
+            'region' => 'required'
+        ]);
+        $matchQuery = ['id' => $id];
+        $user = User::where($matchQuery)->first();
+        if ($user->email != $request->email) {
+            $matchQuery = ['email' => $request->email];
+            $user = User::where($matchQuery)->first();
+            if ($user) {
                 return response()->json([
                     'status' => 422,
-                    'errors' => $validator->messages()
+                    'message' => 'Email Already Exists'
                 ]);
             }
+        }
+
+        $op = User::where('id', $id)->update($validator);
+        if ($op) {
+            return response()->json([
+                'status' => 200,
+                'message' => 'User updated succesfully',
+            ]);
+        } else {
+            return response()->json([
+                'status' => 422,
+                'errors' => $validator->messages()
+            ]);
+        }
     }
 
     public function profileUpdateValidation($email, $request)
@@ -343,9 +344,8 @@ $today = date("Y-m-d H:i:s");                     // 2001-03-10 17:16:18 (le for
             'message' => 'users log in succesfully',
             'user' => $user,
             'access_token' => $user->createToken($request->email)->plainTextToken,
-            'token_expires_at' => date()
-        ]);
 
+        ]);
     }
     public function logout(Request $request)
     {
@@ -356,12 +356,11 @@ $today = date("Y-m-d H:i:s");                     // 2001-03-10 17:16:18 (le for
         return response()->json([
             'status' => 200,
             'message' => 'users logout succesfully',
-            
+
         ]);
     }
     public function getAuthdAdmin(Request $request)
     {
         return $request->user();
     }
-    
 }
