@@ -30,7 +30,7 @@ use App\Http\Controllers\API\ContactUsController;
 use App\Http\Controllers\API\RateController;
 use App\Http\Controllers\API\EmailSubscriptionController;
 use App\Http\Controllers\API\FatoorahController;
-
+use App\Http\Controllers\API\ResetPasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -157,6 +157,7 @@ Route::get('/cart', [CartController::class, 'viewAllCarts']);
 Route::post('/cart', [CartController::class, 'addProductToCart']);
 Route::get('/user/cart', [CartController::class, 'MyCart']);
 Route::delete('/cart/{product_id}', [CartController::class, 'RemoveCartProduct']);
+Route::delete('/all-cart/{user_id}',[CartController::class,'RemoveAllUserCartProducts']);
 
 //Rate functions
 
@@ -286,3 +287,6 @@ Route::get('call_back', [FatoorahController::class,"paymentCallBack"]);
 Route::post('cash/order', [FatoorahController::class, 'CashOrder'])->name('cash.order');
 Route::get('user/orders/{email}',[FatoorahController::class,'UserOrder'])->name('user.order');
 Route::delete('user/order/{id}',[FatoorahController::class,'DeleteUserOrder'])->name('delete.user.order');
+
+Route::post('forget_password',[ResetPasswordController::class,'ForgetPassword'])->name('forget.password');
+Route::post('reset_password',[ResetPasswordController::class,'ResetPassword'])->name('reset.password');

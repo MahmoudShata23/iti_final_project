@@ -109,4 +109,19 @@ class CartController extends Controller
                 'message'=>'Cart ID not found']);
         }
     }
+
+    public function RemoveAllUserCartProducts($user_id){
+        $matchQuery=['user_id'=>$user_id];
+        $item = Cart::where($matchQuery)->first();
+        if($item){
+            DB::table('carts')->where($matchQuery)->delete();
+            return response()->json([
+                'status'=>200,
+                'message'=>'Cart deleted succesfully']);
+        } else{
+            return response()->json([
+                'status'=>404,
+                'message'=>'Cart ID not found']);
+        }
+    }
 }
