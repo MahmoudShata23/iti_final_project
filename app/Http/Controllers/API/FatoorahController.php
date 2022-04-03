@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\services\FatoorahServices;
 use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\User;
 
 class FatoorahController extends Controller
@@ -36,7 +37,7 @@ class FatoorahController extends Controller
             "CallBackUrl" => 'http://127.0.0.1:8000/api/call_back',
             "ErrorUrl" => 'https://google.com',
             "Language" => 'en',
-            "DisplayCurrencyIso" => 'EGP'
+            "DisplayCurrencyIso" => 'EGP',
 
         ];
         return  $this->fatoorahServivce->sendPayment($data);
@@ -56,6 +57,7 @@ class FatoorahController extends Controller
         $data['KeyType'] = 'paymentId';
         //return  $this->fatoorahServivce->getPaymentStatus($data);
         $paymentData = $this->fatoorahServivce->getPaymentStatus($data);
+    
         $user = User::where(['email' => $paymentData['Data']['CustomerEmail']])->first();
 
 
@@ -84,7 +86,8 @@ class FatoorahController extends Controller
     {
         $request->validate([
             'email' => 'required|email',
-            'InvoiceValue' => 'required|numeric'
+            'InvoiceValue' => 'required|numeric',
+            'products'=> 'required'
         ]);
         $user = User::where(['email' => $request->email])->first();
 
@@ -101,6 +104,16 @@ class FatoorahController extends Controller
         $orderObject->order_month = now()->month;
         $orderObject->order_year = now()->year;
         $orderObject->save();
+
+        $products=json_decode($request->products);
+        foreach($products as $product){
+            $orderItem = new OrderItem;
+            $orderItem->order_id=$orderObject->id;
+            $orderItem->product_id=$product->product_id;
+            $orderItem->qty=$product->count;
+            $orderItem->price=floatval($product->price)-floatval($product->discount);
+            $orderItem->save();
+        }
 
         return response()->json([
             'status' => 200,

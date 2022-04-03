@@ -124,4 +124,34 @@ class CartController extends Controller
                 'message'=>'Cart ID not found']);
         }
     }
+
+    public function UpdateProductCount(Request $request){
+        $validator=$request->validate([
+            'user_id'=>'required',
+            'product_id'=>'required',
+            'count'=>'required'
+        ]);
+
+        $matchQuery=['user_id'=>$request->user_id,'product_id'=>$request->product_id];
+        $cartItem=Cart::where($matchQuery)->first();
+        if($cartItem){
+            $updated=Cart::where($matchQuery)->update($validator);
+            if($updated){
+                return response()->json([
+                    'status'=>200,
+                    'message'=>'success'
+                ]);
+            }else{
+                return response()->json([
+                    'status'=>422,
+                    'message'=>'failed'
+                ]);
+            }
+        }else{
+            return response()->json([
+                'status'=>422,
+                'message'=>'failed'
+            ]);
+        }
+    }
 }
