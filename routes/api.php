@@ -158,6 +158,7 @@ Route::post('/cart', [CartController::class, 'addProductToCart']);
 Route::get('/user/cart', [CartController::class, 'MyCart']);
 Route::delete('/cart/{product_id}', [CartController::class, 'RemoveCartProduct']);
 Route::delete('/all-cart/{user_id}',[CartController::class,'RemoveAllUserCartProducts']);
+Route::post('/update/cart',[CartController::class,'UpdateProductCount']);
 
 //Rate functions
 
