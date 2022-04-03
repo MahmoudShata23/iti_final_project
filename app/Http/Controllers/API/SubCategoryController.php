@@ -45,7 +45,7 @@ class SubCategoryController extends Controller
         $request->validate([
             'name'=>'required',
             'description'=>'required',
-            'category_id'=>'required|numeric',
+            // 'category_id'=>'required|numeric',
             'image'=>'required|max:2048|image|mimes:png,jpg,jpeg',
         ]);
 
@@ -62,7 +62,7 @@ class SubCategoryController extends Controller
             $subcategory=new SubCategory;
             $subcategory->name=$request->name;
             $subcategory->description=$request->description;
-            $subcategory->category_id=intval($request->category_id);
+            //$subcategory->category_id=intval($request->category_id);
             $subcategory->image = $fileName;
             $subcategory->save();
 

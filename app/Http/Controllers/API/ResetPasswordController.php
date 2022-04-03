@@ -49,7 +49,9 @@ class ResetPasswordController extends Controller
 
     public function send_reset_email($user)
     {
-        $data = array('token' => $user->token);
+
+        $data = array('token' => $user->token, 'email' => $user->email);
+
 
         Mail::send('reset_password', $data, function ($message) use ($user) {
             $message->bcc($user->email)->subject('Reset Password');
