@@ -59,7 +59,7 @@ Route::get('/language/english', [LanguageController::class, 'English'])->name('e
 Route::get('/admin/profile/{id}', [AdminProfileController::class, 'AdminProfile'])->name('admin.profile');
 
 Route::post('/signup', [AdminProfileController::class, 'SignUp'])->name('admin.SignUp');
-Route::post("/login",[AdminProfileController::class, 'AdminLogin'])->name('admin.profile');
+Route::post("/login", [AdminProfileController::class, 'AdminLogin'])->name('admin.profile');
 Route::get('/logout', [AdminController::class, 'logout'])->name('admin.logout')->middleware('auth:sanctum');
 Route::get('/getAuthdAdmin', [AdminController::class, 'getAuthdAdmin'])->name('admin.getAuthdAdmin');
 Route::get('/change/password/{id}', [AdminProfileController::class, 'AdminChangePassword'])->name('admin.change.password');
@@ -89,7 +89,7 @@ Route::prefix('category')->group(function () {
     // admin Sub Category All Routes
 
     Route::get('/sub/view', [SubCategoryController::class, 'SubCategoryView'])->name('all.subcategory');
-    Route::get('/catsub/view/{category_id}',[SubCategoryController::class,'Category_Subcategories'])->name('view.sub.bycategory');
+    Route::get('/catsub/view/{category_id}', [SubCategoryController::class, 'Category_Subcategories'])->name('view.sub.bycategory');
     Route::get('/sub/show/{id}', [SubCategoryController::class, 'SubCategoryshow'])->name('show.subcategory');
     Route::post('/sub/store', [SubCategoryController::class, 'SubCategoryStore'])->name('subcategory.store');
     Route::get('/sub/edit/{id}', [SubCategoryController::class, 'SubCategoryEdit'])->name('subcategory.edit');
@@ -157,7 +157,7 @@ Route::get('/cart', [CartController::class, 'viewAllCarts']);
 Route::post('/cart', [CartController::class, 'addProductToCart']);
 Route::get('/user/cart', [CartController::class, 'MyCart']);
 Route::delete('/cart/{product_id}', [CartController::class, 'RemoveCartProduct']);
-Route::delete('/all-cart/{user_id}',[CartController::class,'RemoveAllUserCartProducts']);
+Route::delete('/all-cart/{user_id}', [CartController::class, 'RemoveAllUserCartProducts']);
 
 //Rate functions
 
@@ -206,7 +206,7 @@ Route::prefix('orders')->group(function () {
 Route::group(['prefix' => 'user', 'namespace' => 'User'], function () {
 
 
-        //all users routes
+    //all users routes
     Route::get('/index', [IndexController::class, 'index']);
     Route::get('/profile/{id}', [IndexController::class, 'UserProfile'])->name('user.profile');
     Route::post('/profile/update/{id}', [IndexController::class, 'UserProfileUpdate'])->name('user.profile.edit');
@@ -215,7 +215,7 @@ Route::group(['prefix' => 'user', 'namespace' => 'User'], function () {
     ////http://127.0.0.1:8000/api/user/signup
     Route::post('/signup', [IndexController::class, 'signup'])->name('User.signup');
     //http://127.0.0.1:8000/api/user/login
-    Route::post("/login",[IndexController::class, 'login'])->name('User.login');
+    Route::post("/login", [IndexController::class, 'login'])->name('User.login');
     //http://127.0.0.1:8000/api/user/logout
     Route::post('/logout', [IndexController::class, 'logout'])->name('User.logout')->middleware('auth:sanctum');
     Route::get('/getAuthdAdmin', [IndexController::class, 'getAuthdAdmin'])->name('User.getAuthdAdmin');
@@ -238,7 +238,7 @@ Route::group(['prefix' => 'user', 'namespace' => 'User'], function () {
     // Route to send the return order reason To database Return Order
     Route::post('/return/order/{order_id}', [AllUserController::class, 'ReturnOrder'])->name('return-order');
     // Return Order List
-    Route::get('/return/orders/list', [AllUserController::class, 'ReturnedOrderList'])->name('returned.orders.list');
+    Route::get('/orders/list', [AllUserController::class, 'ReturnedOrderList'])->name('orders.list');
     // cancelled order list
     Route::get('/cancelled/orders/list', [AllUserController::class, 'CancelledOrderList'])->name('cancelled.orders.list');
     // Order Tracking in Home Page
@@ -278,15 +278,15 @@ Route::prefix('reports')->group(function () {
     Route::post('/search/by/color', [ReportController::class, 'ReportSearchByColor'])->name('search-by-color');
 });
 
-Route::post('/subscribe',[EmailSubscriptionController::class,'SubscribeToUpdates'])->name('subscribe-to-updates');
-Route::delete('/unsubscribe/{email}',[EmailSubscriptionController::class,'UnsubscribeToUpdates'])->name('unsubscribe-to-updates');
+Route::post('/subscribe', [EmailSubscriptionController::class, 'SubscribeToUpdates'])->name('subscribe-to-updates');
+Route::delete('/unsubscribe/{email}', [EmailSubscriptionController::class, 'UnsubscribeToUpdates'])->name('unsubscribe-to-updates');
 
 //myfatoorah
-Route::post('pay', [FatoorahController::class,"payOrder"]); //add middle ware
-Route::get('call_back', [FatoorahController::class,"paymentCallBack"]);
+Route::post('pay', [FatoorahController::class, "payOrder"]); //add middle ware
+Route::get('call_back', [FatoorahController::class, "paymentCallBack"]);
 Route::post('cash/order', [FatoorahController::class, 'CashOrder'])->name('cash.order');
-Route::get('user/orders/{email}',[FatoorahController::class,'UserOrder'])->name('user.order');
-Route::delete('user/order/{id}',[FatoorahController::class,'DeleteUserOrder'])->name('delete.user.order');
+Route::get('user/orders/{email}', [FatoorahController::class, 'UserOrder'])->name('user.order');
+Route::delete('user/order/{id}', [FatoorahController::class, 'DeleteUserOrder'])->name('delete.user.order');
 
-Route::post('forget_password',[ResetPasswordController::class,'ForgetPassword'])->name('forget.password');
-Route::post('reset_password',[ResetPasswordController::class,'ResetPassword'])->name('reset.password');
+Route::post('forget_password', [ResetPasswordController::class, 'ForgetPassword'])->name('forget.password');
+Route::post('reset_password', [ResetPasswordController::class, 'ResetPassword'])->name('reset.password');
