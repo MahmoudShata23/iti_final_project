@@ -74,6 +74,7 @@ class FatoorahController extends Controller
         $orderObject->order_year = now()->year;
         $orderObject->save();
 
+        app('App\Http\Controllers\API\CartController')->RemoveAllUserCartProducts($user->id);
         return  redirect('http://localhost:4200/user-orders');
         //in database search with invoice id to get the customer
 
