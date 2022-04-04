@@ -17,19 +17,19 @@ class OrderController extends Controller
     // Pending Orders
     public function OrdersDetails($order_id)
     {
-        $order = Order::with('user')->where('id', $order_id)->first();
-        $order_item = OrderItem::with('product')->where('order_id', $order_id)->
-        orderBy('id', 'DESC')->get();
-
-        if($order_item){
+        $matchQuery=['order_id'=>$order_id];
+        $orderItems=OrderItem::where($matchQuery)->get();
+        if(count($orderItems)>0){
             return response()->json([
-                'status' => 200,
-                'message' => 'OrderItems already exits']);
-
+                'status'=>200,
+                'orderItems'=>OrderItemResource::collection($orderItems)
+            ]);
         }else{
             return response()->json([
-                'status' => 200,
-                'message' => 'OrderItems not already exits']);}
+                'status'=>422,
+                'message'=>'no order'
+            ]);
+        }
     }
 
     public function PendingOrders()
