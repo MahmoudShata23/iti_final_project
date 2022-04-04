@@ -104,7 +104,7 @@ Route::prefix('adminuser')->group(function () {
     Route::post('/store', [AdminUserController::class, 'StoreAdminUser'])->name('store-admin-user');
     Route::get('/edit/{id}', [AdminUserController::class, 'EditAdminUser'])->name('edit-admin-user');
     Route::post('/update/{id}', [AdminUserController::class, 'UpdateAdmin'])->name('update-admin-user');
-    Route::get('/delete/{id}', [AdminUserController::class, 'DeleteAdmin'])->name('delete-admin-user');
+    Route::delete('/delete/{id}', [AdminUserController::class, 'DeleteAdmin'])->name('delete-admin-user');
 });
 
 //admin add slider
