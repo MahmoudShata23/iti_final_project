@@ -40,6 +40,7 @@ class FatoorahController extends Controller
             "DisplayCurrencyIso" => 'EGP',
 
         ];
+        
         return  $this->fatoorahServivce->sendPayment($data);
         //transaction table needed in database to store the values  $invoice,to know user
         //$invoiceid=1262025;
@@ -58,26 +59,27 @@ class FatoorahController extends Controller
         //return  $this->fatoorahServivce->getPaymentStatus($data);
         $paymentData = $this->fatoorahServivce->getPaymentStatus($data);
     
-        $user = User::where(['email' => $paymentData['Data']['CustomerEmail']])->first();
+        return $paymentData['Data'];
+        // $user = User::where(['email' => $paymentData['Data']['CustomerEmail']])->first();
 
 
 
-        $orderObject = new Order;
-        $orderObject->name = $user->name;
-        $orderObject->email = $user->email;
-        $orderObject->phone = $user->phone;
-        $orderObject->address = $user->address . ", " . $user->city . ", " . $user->region;
-        $orderObject->payment_type = $paymentData['Data']['InvoiceTransactions']['0']['PaymentGateway'];
-        $orderObject->currency = $paymentData['Data']['InvoiceTransactions']['0']['Currency'];
-        $orderObject->amount = floatval(explode(" ", str_replace(array(','), '', $paymentData['Data']['InvoiceDisplayValue']))[0]);
-        $orderObject->invoice_number = $paymentData['Data']['InvoiceId'];
-        $orderObject->order_date = now()->day;
-        $orderObject->order_month = now()->month;
-        $orderObject->order_year = now()->year;
-        $orderObject->save();
+        // $orderObject = new Order;
+        // $orderObject->name = $user->name;
+        // $orderObject->email = $user->email;
+        // $orderObject->phone = $user->phone;
+        // $orderObject->address = $user->address . ", " . $user->city . ", " . $user->region;
+        // $orderObject->payment_type = $paymentData['Data']['InvoiceTransactions']['0']['PaymentGateway'];
+        // $orderObject->currency = $paymentData['Data']['InvoiceTransactions']['0']['Currency'];
+        // $orderObject->amount = floatval(explode(" ", str_replace(array(','), '', $paymentData['Data']['InvoiceDisplayValue']))[0]);
+        // $orderObject->invoice_number = $paymentData['Data']['InvoiceId'];
+        // $orderObject->order_date = now()->day;
+        // $orderObject->order_month = now()->month;
+        // $orderObject->order_year = now()->year;
+        // $orderObject->save();
 
-        app('App\Http\Controllers\API\CartController')->RemoveAllUserCartProducts($user->id);
-        return  redirect('http://localhost:4200/user-orders');
+        // app('App\Http\Controllers\API\CartController')->RemoveAllUserCartProducts($user->id);
+        // return  redirect('http://localhost:4200/user-orders');
         //in database search with invoice id to get the customer
 
     }
@@ -89,6 +91,7 @@ class FatoorahController extends Controller
             'InvoiceValue' => 'required|numeric',
             'products'=> 'required'
         ]);
+    
         $user = User::where(['email' => $request->email])->first();
 
         $orderObject = new Order;
